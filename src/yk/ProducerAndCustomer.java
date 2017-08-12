@@ -1,6 +1,6 @@
 package yk;
 
-public class ProducerCustomer {
+public class ProducerAndCustomer {
 	public static void main(String[] args) {
 		Stack stack = new Stack();
 		Producer producer = new Producer(stack);
@@ -10,19 +10,15 @@ public class ProducerCustomer {
 	}
 }
 
-class Apple {
-	private int id;
+class Apple{
+	int id;
 	public Apple(int id) {
 		this.id = id;
-	}
-	@Override
-	public String toString() {
-		return "Apple:"+id;
 	}
 }
 
 class Stack {
-	int index = 0;
+	int index=0;
 	Apple[] apples = new Apple[10];
 	
 	public synchronized void push(Apple apple){
@@ -52,18 +48,16 @@ class Stack {
 }
 
 class Producer implements Runnable{
-	
 	Stack stack = null;
 	public Producer(Stack stack) {
 		this.stack = stack;
 	}
-	
 	@Override
 	public void run() {
 		for (int i = 0; i < 20; i++) {
 			Apple apple = new Apple(i);
-			stack.push(apple);
 			System.out.println("生产了："+(i+1));
+			stack.push(apple);
 			try {
 				Thread.sleep((int)(Math.random()*1000));
 			} catch (InterruptedException e) {
@@ -73,23 +67,21 @@ class Producer implements Runnable{
 	}
 }
 
-class Customer implements Runnable {
+class Customer implements Runnable{
 	Stack stack = null;
 	public Customer(Stack stack) {
 		this.stack = stack;
 	}
-	
 	@Override
 	public void run() {
-		for (int i = 0; i <20; i++) {
+		for (int i = 0; i < 20; i++) {
 			stack.pop();
+			System.out.println("************消费了："+(i+1));
 			try {
 				Thread.sleep((int)(Math.random()*1000));
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			System.out.println("*********消费了："+(i+1));
 		}
 	}
 }
-
